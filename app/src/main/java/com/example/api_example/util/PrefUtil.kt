@@ -11,7 +11,7 @@ object PrefUtil {
     fun initPrefUtil(context:Context){
         sharedPref =context.getSharedPreferences(SHARED_PREFS_NAME,Context.MODE_PRIVATE)
     }
-    var clotheList: List<Clothes>
+    var clothesList: List<Clothes>
         get() {
             val get = sharedPref?.getString(CLOTHE_KEY, null)
             return Gson().fromJson(get, Array<Clothes>::class.java).toList()

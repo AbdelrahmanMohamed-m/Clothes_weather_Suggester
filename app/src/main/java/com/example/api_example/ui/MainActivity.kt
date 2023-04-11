@@ -160,23 +160,23 @@ class MainActivity : AppCompatActivity() {
         var listOfClothes: MutableList<Clothes>
         if (temperature < 15) {
 
-            listOfClothes = if (loadTemp() != "" && loadTemp() == date)
+            listOfClothes = if (loadDate() != "" && loadDate() == date)
                 loadSaveClothes() as MutableList<Clothes>
             else
                 randomListWinter
 
-            if (loadTemp() != "" && listOfClothes == loadSaveClothes() && loadTemp() != date) {
+            if (loadDate() != "" && listOfClothes == loadSaveClothes() && loadDate() != date) {
                 val newWinterClothesList = winterClothes.filter { it != loadSaveClothes() }
                 val randomIndex = Random().nextInt(newWinterClothesList.size)
                 listOfClothes = newWinterClothesList[randomIndex]
             }
         } else {
-            listOfClothes = if (loadTemp() != "" && loadTemp() == date)
+            listOfClothes = if (loadDate() != "" && loadDate() == date)
                 loadSaveClothes() as MutableList<Clothes>
             else
                 randomListSummer
 
-            if (loadTemp() != "" && listOfClothes == loadSaveClothes() && loadTemp() != date) {
+            if (loadDate() != "" && listOfClothes == loadSaveClothes() && loadDate() != date) {
                 val newSummerList = summerClothes.filter { it != loadSaveClothes() }
                 val randomIndex = Random().nextInt(newSummerList.size)
                 listOfClothes = newSummerList[randomIndex]
@@ -187,15 +187,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveClothes(date: String, listOfClothes: MutableList<Clothes>) {
-        PrefUtil.clotheList = listOfClothes
+        PrefUtil.clothesList = listOfClothes
         PrefUtil.date = date
     }
 
     private fun loadSaveClothes(): List<Clothes> {
-        return PrefUtil.clotheList
+        return PrefUtil.clothesList
     }
 
-    private fun loadTemp(): String {
+    private fun loadDate(): String {
         return PrefUtil.date!!
     }
 
