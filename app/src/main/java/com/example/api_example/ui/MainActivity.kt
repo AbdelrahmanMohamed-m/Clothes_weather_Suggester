@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                             Windspeed.text = result.wind.speed.toInt().toString() + " km/h"
                             HumidityPercentage.text = result.main.humidity.toString() + "%"
                             pressureMB.text = result.main.pressure.toString() + " MB"
-                            setup(result.main.temp_max - 273.15, presentDay())
+                            setup(result.main.temp_max - 273.15)
                         }
                     }
                 }
@@ -63,11 +63,11 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun setup(temperature: Double, date: String) {
+    fun setup(temperature: Double) {
         PrefUtil.initPrefUtil(this)
         pickStyle()
-        val listOfClothes = suggestClothesBasedOnTemperature(temperature, date)
-        saveClothes(date, listOfClothes)
+        val listOfClothes = suggestClothesBasedOnTemperature(temperature)
+        saveClothes(temperature.toFloat(), listOfClothes)
         val adapter = clothesAdapter(listOfClothes)
         binding.aboutRecyclerView.adapter = adapter
     }
@@ -155,28 +155,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun suggestClothesBasedOnTemperature(
         temperature: Double,
-        date: String,
+
     ): MutableList<Clothes> {
         var listOfClothes: MutableList<Clothes>
-        if (temperature < 15) {
+        if (temperature < 15.0) {
 
-            listOfClothes = if (loadDate() != "" && loadDate() == date)
+            listOfClothes = if (loadDate() != 0f && loadDate() == temperature.toFloat())
                 loadSaveClothes() as MutableList<Clothes>
             else
                 randomListWinter
 
-            if (loadDate() != "" && listOfClothes == loadSaveClothes() && loadDate() != date) {
+            if (loadDate() != 0f && listOfClothes == loadSaveClothes() && loadDate() != temperature.toFloat()) {
                 val newWinterClothesList = winterClothes.filter { it != loadSaveClothes() }
                 val randomIndex = Random().nextInt(newWinterClothesList.size)
                 listOfClothes = newWinterClothesList[randomIndex]
             }
         } else {
-            listOfClothes = if (loadDate() != "" && loadDate() == date)
+            listOfClothes = if (loadDate() != 0f && loadDate() == temperature.toFloat())
                 loadSaveClothes() as MutableList<Clothes>
             else
                 randomListSummer
 
-            if (loadDate() != "" && listOfClothes == loadSaveClothes() && loadDate() != date) {
+            if (loadDate() != 0f && listOfClothes == loadSaveClothes() && loadDate() != temperature.toFloat()) {
                 val newSummerList = summerClothes.filter { it != loadSaveClothes() }
                 val randomIndex = Random().nextInt(newSummerList.size)
                 listOfClothes = newSummerList[randomIndex]
@@ -186,17 +186,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun saveClothes(date: String, listOfClothes: MutableList<Clothes>) {
+    private fun saveClothes(date: Float, listOfClothes: MutableList<Clothes>) {
         PrefUtil.clothesList = listOfClothes
-        PrefUtil.date = date
+        PrefUtil.tempreture = date
     }
 
     private fun loadSaveClothes(): List<Clothes> {
         return PrefUtil.clothesList
     }
 
-    private fun loadDate(): String {
-        return PrefUtil.date!!
+    private fun loadDate(): Float {
+        return PrefUtil.tempreture!!
     }
 
 }
