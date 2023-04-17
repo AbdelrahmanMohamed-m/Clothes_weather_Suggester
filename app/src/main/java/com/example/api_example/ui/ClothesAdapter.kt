@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.api_example.R
 import com.example.api_example.databinding.ClothesItemBinding
 
-class clothesAdapter(private val items: List<Clothes>) :
-    RecyclerView.Adapter<clothesAdapter.ClothesViewHolder>() {
+class ClothesAdapter(private val items: List<Clothes>) :
+    RecyclerView.Adapter<ClothesAdapter.ClothesViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesViewHolder {
         val viewBinder =
             LayoutInflater.from(parent.context).inflate(R.layout.clothes_item, parent, false)

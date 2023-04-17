@@ -7,7 +7,7 @@ object PrefUtil {
     private var sharedPref:SharedPreferences?=null
     private const val SHARED_PREFS_NAME="myClothes"
     private const val CLOTHE_KEY="keyClothes"
-    private const val tempKey="tempKey"
+    private const val DateKey="dateValue"
     fun initPrefUtil(context:Context){
         sharedPref =context.getSharedPreferences(SHARED_PREFS_NAME,Context.MODE_PRIVATE)
     }
@@ -21,10 +21,10 @@ object PrefUtil {
             val myObjectListJson = Gson().toJson(value)
             edit?.putString(CLOTHE_KEY,myObjectListJson)?.apply()
         }
-    var tempreture: Float?
-        get() = sharedPref?.getFloat(tempKey, 0f)
+    var date: String?
+        get() = sharedPref?.getString(DateKey, "")
         set(value){
             val edit= sharedPref?.edit()
-            edit?.putFloat(tempKey, value!!)?.apply()
+            edit?.putString(DateKey, value!!)?.apply()
         }
 }
