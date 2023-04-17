@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         return currentTime.format(formatter)
     }
 
-    private fun onFailure(e: java.lang.Exception): Unit {
+    private fun onFailure(e: java.lang.Exception) {
         e.message?.let {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
