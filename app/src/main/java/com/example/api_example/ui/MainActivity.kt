@@ -19,7 +19,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val datamanager = dataManger
+    private val dataManager = dataManger
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -67,11 +67,11 @@ class MainActivity : AppCompatActivity() {
             listOfClothes = if (loadDate() == date)
                 loadSaveClothes() as MutableList<Clothes>
             else
-                datamanager.randomListWinter
+                dataManager.randomListWinter
 
             if (listOfClothes == loadSaveClothes() && loadDate() != date) {
                 val newWinterClothesList =
-                    datamanager.winterClothes.filter { it != loadSaveClothes() }
+                    dataManager.winterClothes.filter { it != loadSaveClothes() }
                 val randomIndex = Random().nextInt(newWinterClothesList.size)
                 listOfClothes = newWinterClothesList[randomIndex]
             }
@@ -79,10 +79,10 @@ class MainActivity : AppCompatActivity() {
             listOfClothes = if (loadDate() == date)
                 loadSaveClothes() as MutableList<Clothes>
             else
-                datamanager.randomListSummer
+                dataManager.randomListSummer
 
             if (listOfClothes == loadSaveClothes() && loadDate() != date) {
-                val newSummerList = datamanager.summerClothes.filter { it != loadSaveClothes() }
+                val newSummerList = dataManager.summerClothes.filter { it != loadSaveClothes() }
                 val randomIndex = Random().nextInt(newSummerList.size)
                 listOfClothes = newSummerList[randomIndex]
             }
