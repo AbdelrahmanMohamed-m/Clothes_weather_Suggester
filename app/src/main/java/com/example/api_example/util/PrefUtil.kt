@@ -13,8 +13,8 @@ object PrefUtil {
     }
     var clothesList: List<Clothes>
         get() {
-            val get = sharedPref?.getString(CLOTHE_KEY, null)
-            return Gson().fromJson(get, Array<Clothes>::class.java).toList()
+            val get = sharedPref?.getString(CLOTHE_KEY,"")
+            return Gson().fromJson(get, Array<Clothes>::class.java)!!.toList()
         }
         set(value){
             val edit= sharedPref?.edit()

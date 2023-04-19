@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.api_example.util.ApiRequest
 import com.example.api_example.data.WeatherInformation
 import com.example.api_example.data.WeatherInnerData
-import com.example.api_example.data.dataManger
+import com.example.api_example.data.DataManger
 import com.example.api_example.databinding.ActivityMainBinding
 import com.example.api_example.util.PrefUtil
 import com.google.gson.Gson
@@ -19,7 +19,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val dataManager = dataManger
+    private val dataManager = DataManger
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -56,41 +56,40 @@ class MainActivity : AppCompatActivity() {
         binding.aboutRecyclerView.adapter = adapter
     }
 
-    private fun suggestClothesBasedOnTemperature(
-        temperature: Double,
-        date: String,
+    private fun suggestClothesBasedOnTemperature(temperature: Double, date: String): MutableList<Clothes> {
+        val isColdWeather = temperature < 20
+        val clothesList = if(loadDate() == "") {
+            when {
+                isColdWeather -> randomList(dataManager.winterClothes)
+                else ->randomList(dataManager.summerClothes)
+            }
+        } else
+            when {
+                loadDate() == date -> loadSaveClothes() as MutableList<Clothes>
+                isColdWeather -> generateRandomClothesList(dataManager.winterClothes, loadSaveClothes())
+                else -> generateRandomClothesList(dataManager.summerClothes, loadSaveClothes())
+            }
+        return clothesList
+    }
+    private fun generateRandomClothesList(
+        clothesSource: MutableList<MutableList<Clothes>>,
+        savedClothes: List<Clothes>,
     ): MutableList<Clothes> {
-
-        var listOfClothes: MutableList<Clothes>
-
-        if (temperature < 15.0) {
-            listOfClothes = if (loadDate() == date)
-                loadSaveClothes() as MutableList<Clothes>
-            else
-                dataManager.randomListWinter
-
-            if (listOfClothes == loadSaveClothes() && loadDate() != date) {
-                val newWinterClothesList =
-                    dataManager.winterClothes.filter { it != loadSaveClothes() }
-                val randomIndex = Random().nextInt(newWinterClothesList.size)
-                listOfClothes = newWinterClothesList[randomIndex]
-            }
+        val randomListOfClothes= randomList(clothesSource)
+        return if (savedClothes == randomListOfClothes) {
+            val filteredClothes = clothesSource.filter { it != randomListOfClothes }
+            val randomIndex = Random().nextInt(filteredClothes.size)
+            filteredClothes[randomIndex]
         } else {
-            listOfClothes = if (loadDate() == date)
-                loadSaveClothes() as MutableList<Clothes>
-            else
-                dataManager.randomListSummer
-
-            if (listOfClothes == loadSaveClothes() && loadDate() != date) {
-                val newSummerList = dataManager.summerClothes.filter { it != loadSaveClothes() }
-                val randomIndex = Random().nextInt(newSummerList.size)
-                listOfClothes = newSummerList[randomIndex]
-            }
+            randomListOfClothes
         }
-        return listOfClothes
-
     }
 
+    private fun randomList(list:MutableList<MutableList<Clothes>>):MutableList<Clothes>{
+        val random= Random()
+        val randomIndex=random.nextInt(list.size)
+        return list[randomIndex]
+    }
     private fun saveClothes(date: String, listOfClothes: MutableList<Clothes>) {
         PrefUtil.clothesList = listOfClothes
         PrefUtil.date = date

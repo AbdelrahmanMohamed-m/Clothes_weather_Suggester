@@ -2,10 +2,9 @@ package com.example.api_example.data
 
 import com.example.api_example.R
 import com.example.api_example.ui.Clothes
-import java.util.*
 
-object dataManger {
-    val summerList1 = mutableListOf(
+object DataManger {
+    private val summerList1 = mutableListOf(
         Clothes(R.drawable.shirt1),
         Clothes(R.drawable.shirt2),
         Clothes(R.drawable.shirt3),
@@ -17,7 +16,7 @@ object dataManger {
         Clothes(R.drawable.sneaker3),
     )
 
-    val summerList2 = mutableListOf(
+    private val summerList2 = mutableListOf(
         Clothes(R.drawable.shirt3),
         Clothes(R.drawable.shirt2),
         Clothes(R.drawable.shirt1),
@@ -29,7 +28,7 @@ object dataManger {
         Clothes(R.drawable.sneaker1)
     )
 
-    val winterList1 = mutableListOf(
+    private val winterList1 = mutableListOf(
         Clothes(R.drawable.shirt32),
         Clothes(R.drawable.shirt33),
         Clothes(R.drawable.shite31),
@@ -41,7 +40,7 @@ object dataManger {
         Clothes(R.drawable.sneaker3),
     )
 
-    val winterList2 = mutableListOf(
+    private val winterList2 = mutableListOf(
         Clothes(R.drawable.shirt33),
         Clothes(R.drawable.shirt32),
         Clothes(R.drawable.shite31),
@@ -54,8 +53,5 @@ object dataManger {
     )
     var summerClothes = mutableListOf(summerList1, summerList2)
     var winterClothes = mutableListOf(winterList1, winterList2)
-    val random = Random()
-    val randomIndex = random.nextInt(summerClothes.size)
-    var randomListSummer = summerClothes[randomIndex]
-    var randomListWinter = winterClothes[randomIndex]
+
 }
